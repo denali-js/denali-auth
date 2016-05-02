@@ -1,7 +1,7 @@
-export { default as AuthenticateFilter } from './filters/authenticate';
-export { default as AuthAdapter } from './lib/adapter';
+exports.AuthenticateFilter = require('./filters/authenticate');
+exports.AuthAdapter = require('./lib/adapter');
 
-import login from './lib/test-helpers/login';
-import logout from './lib/test-helpers/logout';
+const login = require('./lib/test-helpers/login');
+const logout = require('./lib/test-helpers/logout');
 
-export const helpers = { login, logout };
+module.exports = { login, logout };
