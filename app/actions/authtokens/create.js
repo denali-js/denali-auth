@@ -1,18 +1,8 @@
 import { inject, Action } from 'denali';
-// import Validate from 'denali-validation';
 
-export default Action.extend(/* Validate, */{
+export default Action.extend({
 
   authentication: inject('service:authentication'),
-
-  expect: {
-    wrapper: false,
-    required: [ 'email', 'password' ],
-    properties: {
-      email: { type: 'string', minLength: 3, pattern: /.+@.+/ },
-      password: { type: 'string', minLength: 1 }
-    }
-  },
 
   respond(credentials) {
     return this.authentication.login(credentials).then((authtoken) => {
@@ -21,3 +11,8 @@ export default Action.extend(/* Validate, */{
   }
 
 });
+
+
+// LEFT OFF - update for latest denali
+// Also - check how devise structures things (other auth frameworks too)? What
+// is a good way to separate concerns here

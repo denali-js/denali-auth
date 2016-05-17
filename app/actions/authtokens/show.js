@@ -2,10 +2,10 @@ import { inject, Action } from 'denali';
 
 export default Action.extend({
 
-  authentication: inject('service:authentication'),
+  adapter: inject('config:adapters/auth'),
 
   respond(params) {
-    this.render(this.authentication.adapter().findAuthtoken(params.id));
+    this.render(this.adapter().findAuthtoken(params.id));
   }
 
 });
