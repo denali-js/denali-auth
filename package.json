@@ -10,7 +10,7 @@
     "denali-addon",
     "addon"
   ],
-  "main": "app/index.js",
+  "main": "addon/index.js",
   "dependencies": {
     "bcrypt": "^0.8.3",
     "bcryptjs": "^2.3.0",
