@@ -2,21 +2,15 @@ import { Action, Response } from 'denali';
 
 export default class ConfirmEmailAction extends Action {
 
-  respond(params) {
+  async respond(params) {
     let ConfirmationToken = this.modelFor('confirmation-token');
-    let token;
-    return ConfirmationToken.find(params.token)
-      .then((t) => {
-        if (!t) {
-          throw new Error.UnprocessableEntity('Invalid confirmation token');
-        }
-        token = t;
-        return token.user();
-      }).then((user) => {
-        return user.confirmEmail(token);
-      }).then(() => {
-        return new Response(204);
-      });
+    let token = await ConfirmationToken.find(params.token);
+    if (!token) {
+      throw new Error.UnprocessableEntity('Invalid confirmation token');
+    }
+    let user = await token.user();
+    await user.confirmEmail(token);
+    return new Response(204);
   }
 
 }

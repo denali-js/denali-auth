@@ -5,10 +5,9 @@ export default class DeleteSessionAction extends mixin(Action, Authenticate()) {
 
   serializer = 'session';
 
-  respond(params) {
-    return this.session.delete().then(() => {
-      return new Response(204);
-    });
+  async respond(params) {
+    await this.session.delete();
+    return new Response(204);
   }
 
 }

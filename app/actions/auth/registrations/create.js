@@ -1,21 +1,17 @@
-import { expect, Action, Response } from 'denali';
+import { Errors, Action, Response } from 'denali';
 
 export default class CreateRegistration extends Action {
 
-  respond(params) {
+  async respond(params) {
     let User = this.modelFor(params.modelName);
     let attributes = params.data.attributes;
 
-    expect(attributes[User.usernameField], User.usernameField);
-
-    if (User.isPasswordable) {
-      expect(attributes.password, 'password');
+    if (!attributes[User.usernameField]) {
+      throw new Errors.UnprocessableEntity(`Missing ${ User.usernameField }`);
     }
 
-    return User.create(attributes).then((user) => {
-      return new Response(201, user);
-    });
+    let user = await User.create(attributes);
+    return new Response(201, user);
   }
 
 }
-

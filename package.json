@@ -2,7 +2,6 @@
   "name": "denali-auth",
   "version": "0.0.1",
   "scripts": {
-    "build": "denali build",
     "test": "denali test"
   },
   "keywords": [
@@ -10,31 +9,26 @@
     "denali-addon",
     "addon"
   ],
-  "main": "dist/addon/index.js",
+  "main": "lib/index.js",
   "dependencies": {
-    "babel-eslint": "^6.0.4",
-    "babel-plugin-transform-class-properties": "^6.9.0",
-    "babel-preset-es2015": "^6.9.0",
+    "babel-plugin-transform-async-to-generator": "^6.16.0",
+    "babel-plugin-transform-class-properties": "^6.18.0",
+    "babel-preset-latest": "^6.16.0",
     "bcrypt": "^0.8.3",
     "bcryptjs": "^2.3.0",
-    "bluebird": "^2.9.25",
-    "body-parser": "^1.13.3",
-    "compression": "^1.5.2",
-    "cookie-parser": "^1.3.5",
-    "cors": "^2.7.1",
-    "denali": "davewasmer/denali",
-    "errorhandler": "^1.4.2",
-    "eslint": "^2.11.0",
-    "eslint-config-denali": "^1.1.2",
-    "express-force-ssl": "^0.3.0",
-    "express-request-id": "^1.1.0",
+    "bluebird": "^3.4.6",
+    "denali": "0.0.13",
+    "denali-babel": "^0.0.2",
+    "denali-eslint": "^0.0.3",
     "inflection": "^1.10.0",
-    "lodash": "^4.13.1",
-    "lodash-node": "^3.8.0",
-    "morgan": "^1.6.1",
-    "response-time": "^2.3.1"
+    "lodash": "^4.13.1"
   },
   "devDependencies": {
-    "must": "^0.13.1"
+    "ava": "^0.16.0",
+    "babel-eslint": "^6.0.4"
+  },
+  "ava": {
+    "plugins": [],
+    "presets": []
   }
 }

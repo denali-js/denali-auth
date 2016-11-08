@@ -1,17 +1,13 @@
-import { attr, hasOne, hasMany, mixin, Model } from 'denali';
-import {
-  Registerable,
-  Sessionable,
-  Passwordable } from '../../../../app';
+import { attr, mixin, Model } from 'denali';
+import { registerable, sessionable, passwordable } from 'denali-auth';
 
 export default class UserModel extends mixin(Model,
-  Registerable(),
-  Passwordable(),
-  Sessionable()
+  registerable(),
+  passwordable(),
+  sessionable()
 ) {
 
   static firstName = attr('text');
   static lastName = attr('text');
 
 }
-

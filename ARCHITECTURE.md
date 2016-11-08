@@ -48,6 +48,7 @@
   * user model gets filled in with details
 * oauth provider
 
+
 # Session Management
 
 * create a session
