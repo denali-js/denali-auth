@@ -1,3 +1,11 @@
+logs
+*.log
 node_modules
-dist
 tmp
+coverage
+npm-debug.log
+dist
+.sass-cache
+_site
+.nyc_output
+lcov.info

@@ -1,38 +1,28 @@
 # denali-auth
 
-API authentication for Denali apps, built on top of passport.js.
+[![NPM version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Coverage][coverage-image]][coverage-url]
+[![Dependency Status][depstat-image]][depstat-url]
+[![Downloads][download-image]][npm-url]
+[![Standard Version][sv-image]][sv-url]
 
-## Usage
-
-To protect a Denali action and ensure users are authenticated before accessing
-it, apply the `authenticate` filter:
-
-```js
-Action.extend(AuthenticateFilter);
-```
-
-This will ensure that the incoming requests to this action have a valid HTTP
-Bearer auth header.
-
-Validation of the bearer token carried in a request's Authorization header is
-done by your `lookupToken` method (see Configuration below).
-
-Users can get a token to use as their bearer token by authenticating with their
-username and password
-
-## Configuration
-
-**lookupToken** - a method which is given the container and a token, and should
-lookup the user associated with that token. Should resolve with the associated
-user, or reject if the user is not found, the token is not valid, or any other
-failure.
+Comprehensive authentication framework for Denali apps. Heavily inspired by Devise.
 
 
-## Why not JWT?
+[npm-url]: https://npmjs.org/package/denali
+[npm-image]: https://img.shields.io/npm/v/denali.svg?style=flat-square
 
-No control over expiring / revoking tokens
+[travis-url]: https://travis-ci.org/denali-js/denali
+[travis-image]: https://img.shields.io/travis/denali-js/denali/master.svg?style=flat-square
 
-## Why not vanilla express/session?
+[coverage-url]: https://codeclimate.com/github/denali-js/denali
+[coverage-image]: https://img.shields.io/codeclimate/coverage/github/denali-js/denali.svg?style=flat-square
 
-Cookies are wired in, seems abandoned or ignored
-Instead, we mimic the API of express/session, including faking out the cookie object
+[depstat-url]: https://david-dm.org/denali-js/denali
+[depstat-image]: https://david-dm.org/denali-js/denali/status.svg?style=flat-square
+
+[download-image]: https://img.shields.io/npm/dm/denali.svg?style=flat-square
+
+[sv-url]: https://github.com/conventional-changelog/standard-version
+[sv-image]: https://img.shields.io/badge/release-standard%20version-brightgreen.svg?style=flat-square

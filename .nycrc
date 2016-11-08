@@ -1,0 +1,9 @@
+{
+  "include": [
+    "lib/**/*.js",
+    "app/**/*.js",
+    "config/**/*.js"
+  ],
+  "sourceMap": false,
+  "instrument": false
+}

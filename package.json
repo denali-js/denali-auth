@@ -10,6 +10,13 @@
     "addon"
   ],
   "main": "lib/index.js",
+  "scripts": {
+    "coverage": "scripts/coverage.sh",
+    "preversion": "scripts/preversion.sh",
+    "release": "scripts/release.sh",
+    "test": "scripts/test.sh"
+  },
+  "license": "MIT",
   "dependencies": {
     "babel-plugin-transform-async-to-generator": "^6.16.0",
     "babel-plugin-transform-class-properties": "^6.18.0",
@@ -25,7 +32,11 @@
   },
   "devDependencies": {
     "ava": "^0.16.0",
-    "babel-eslint": "^6.0.4"
+    "babel-eslint": "^6.0.4",
+    "babel-plugin-istanbul": "^2.0.1",
+    "codeclimate-test-reporter": "^0.4.0",
+    "nyc": "^8.1.0",
+    "standard-version": "^2.4.0"
   },
   "ava": {
     "plugins": [],
