@@ -1,7 +1,7 @@
-import { mixin, Action, Response, Errors } from 'denali';
-import { Authenticate } from '../../../../lib';
+import { mixin, Action, Response } from 'denali';
+import { authenticate } from '../../../../lib';
 
-export default class CreateSessionAction extends mixin(Action, Authenticate()) {
+export default class CreateSessionAction extends mixin(Action, authenticate()) {
 
   serializer = 'session';
 

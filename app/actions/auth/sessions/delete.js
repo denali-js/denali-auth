@@ -1,11 +1,11 @@
 import { Action, Response, mixin } from 'denali';
-import { Authenticate } from '../../../index';
+import { authenticate } from '../../../../lib';
 
-export default class DeleteSessionAction extends mixin(Action, Authenticate()) {
+export default class DeleteSessionAction extends mixin(Action, authenticate()) {
 
   serializer = 'session';
 
-  async respond(params) {
+  async respond() {
     await this.session.delete();
     return new Response(204);
   }

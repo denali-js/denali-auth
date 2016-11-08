@@ -16,7 +16,7 @@ test('allows users to register', async (t) => {
   let { status, body } = await app.post('/users/auth/register', newUser);
   t.is(status, 201);
   t.is(body.data.attributes.email, 'dave@example.com');
-  t.falsey(body.data.attributes.password);
+  t.falsy(body.data.attributes.password);
 });
 
 test('should reject registration payloads without an email', async (t) => {

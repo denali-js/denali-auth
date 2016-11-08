@@ -9,6 +9,9 @@ export default class CreateRegistration extends Action {
     if (!attributes[User.usernameField]) {
       throw new Errors.UnprocessableEntity(`Missing ${ User.usernameField }`);
     }
+    if (!attributes.password) {
+      throw new Errors.UnprocessableEntity(`Missing password`);
+    }
 
     let user = await User.create(attributes);
     return new Response(201, user);
