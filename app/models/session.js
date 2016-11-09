@@ -1,9 +1,9 @@
-import { Model, attr } from 'denali';
+import { Model, attr, hasOne } from 'denali';
 import uuid from 'node-uuid';
 
 export default class Session extends Model {
 
-  static userId = attr('text');
+  static user = hasOne('user');
   static token = attr('text');
   static expiresAt = attr('date');
 
