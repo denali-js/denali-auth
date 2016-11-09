@@ -1,1 +1,1 @@
-NODE_ENV=test nyc ./bin/denali test "$@"
+NODE_ENV=test nyc denali test "$@"
