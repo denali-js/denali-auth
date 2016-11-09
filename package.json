@@ -21,7 +21,6 @@
     "babel-plugin-transform-async-to-generator": "^6.16.0",
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
-    "bcrypt": "^0.8.3",
     "bcryptjs": "^2.3.0",
     "bluebird": "^3.4.6",
     "denali": "0.0.13",
