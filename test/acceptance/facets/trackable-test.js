@@ -2,7 +2,7 @@ import test from 'ava';
 import { AppAcceptanceTest } from 'denali';
 
 
-test('allows users to create a session', async (t) => {
+test('tracks last login data', async (t) => {
   let app = new AppAcceptanceTest();
   let loginCredentials = {
     email: 'dave@example.com',
@@ -14,14 +14,15 @@ test('allows users to create a session', async (t) => {
       attributes: loginCredentials
     }
   });
+  await app.post('/users/auth/sessions', loginCredentials);
 
-  let { status, body } = await app.post('/users/auth/sessions', loginCredentials);
-  t.is(status, 201);
-  t.truthy(body.token);
-  t.falsy(body.password);
+  let db = app.lookup('orm-adapter:memory')._cache;
+  t.truthy(db.users[1].lastLoginAt);
+  t.truthy(db.users[1].lastIp);
+  t.is(db.users[1].loginCount, 1);
 });
 
-test('allows users to delete a session (logout)', async (t) => {
+test('tracks last seen time', async (t) => {
   let app = new AppAcceptanceTest();
   let loginCredentials = {
     email: 'dave@example.com',
@@ -34,13 +35,9 @@ test('allows users to delete a session (logout)', async (t) => {
     }
   });
   let { body } = await app.post('/users/auth/sessions', loginCredentials);
+  app.setHeader('Authorization', `TOKEN ${ body.token }`);
+  await app.get('/');
 
-  let { status } = await app.delete('/users/auth/sessions', {
-    headers: {
-      Authorization: `TOKEN ${ body.token }`
-    }
-  });
-  t.is(status, 204);
+  let db = app.lookup('orm-adapter:memory')._cache;
+  t.truthy(db.users[1].lastSeen);
 });
-
-test.todo('fails if not logged in');

@@ -173,6 +173,10 @@ assert-plus@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/assert-plus/-/assert-plus-1.0.0.tgz#f12e0f3c5d77b0b1cdd9146942e4e96c1e4dd525"
 
+assertion-error@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/assertion-error/-/assertion-error-1.0.2.tgz#13ca515d86206da0bac66e834dd397d87581094c"
+
 async-disk-cache@^1.0.0:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/async-disk-cache/-/async-disk-cache-1.0.9.tgz#23bafb823184f463407e474e8d5f87899f72ca63"
@@ -364,17 +368,7 @@ babel-core@^6.14.0, babel-core@^6.16.0, babel-core@^6.18.0, babel-core@^6.3.21:
     slash "^1.0.0"
     source-map "^0.5.0"
 
-babel-eslint@^6.0.4:
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-6.1.2.tgz#5293419fe3672d66598d327da9694567ba6a5f2f"
-  dependencies:
-    babel-traverse "^6.0.20"
-    babel-types "^6.0.19"
-    babylon "^6.0.18"
-    lodash.assign "^4.0.0"
-    lodash.pickby "^4.0.0"
-
-babel-eslint@^7.0.0:
+babel-eslint@^7.0.0, babel-eslint@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-7.1.0.tgz#d506a5174ba224e25a2d17e128e2ba8987139ddc"
   dependencies:
@@ -548,7 +542,7 @@ babel-plugin-espower@^2.2.0:
     espurify "^1.6.0"
     estraverse "^4.1.1"
 
-babel-plugin-istanbul@^2.0.1:
+babel-plugin-istanbul@^2.0.1, babel-plugin-istanbul@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-istanbul/-/babel-plugin-istanbul-2.0.3.tgz#266b304b9109607d60748474394676982f660df4"
   dependencies:
@@ -935,7 +929,7 @@ babel-template@^6.14.0, babel-template@^6.15.0, babel-template@^6.16.0, babel-te
     babylon "^6.11.0"
     lodash "^4.2.0"
 
-babel-traverse@^6.0.20, babel-traverse@^6.15.0, babel-traverse@^6.16.0, babel-traverse@^6.18.0:
+babel-traverse@^6.15.0, babel-traverse@^6.16.0, babel-traverse@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-traverse/-/babel-traverse-6.18.0.tgz#5aeaa980baed2a07c8c47329cd90c3b90c80f05e"
   dependencies:
@@ -949,7 +943,7 @@ babel-traverse@^6.0.20, babel-traverse@^6.15.0, babel-traverse@^6.16.0, babel-tr
     invariant "^2.2.0"
     lodash "^4.2.0"
 
-babel-types@^6.0.19, babel-types@^6.13.0, babel-types@^6.15.0, babel-types@^6.16.0, babel-types@^6.18.0, babel-types@^6.7.2, babel-types@^6.8.0, babel-types@^6.9.0:
+babel-types@^6.13.0, babel-types@^6.15.0, babel-types@^6.16.0, babel-types@^6.18.0, babel-types@^6.7.2, babel-types@^6.8.0, babel-types@^6.9.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-types/-/babel-types-6.18.0.tgz#1f7d5a73474c59eb9151b2417bbff4e4fce7c3f8"
   dependencies:
@@ -958,7 +952,7 @@ babel-types@^6.0.19, babel-types@^6.13.0, babel-types@^6.15.0, babel-types@^6.16
     lodash "^4.2.0"
     to-fast-properties "^1.0.1"
 
-babylon@^6.0.18, babylon@^6.1.0, babylon@^6.11.0, babylon@^6.11.2, babylon@^6.13.0:
+babylon@^6.1.0, babylon@^6.11.0, babylon@^6.11.2, babylon@^6.13.0:
   version "6.13.1"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.13.1.tgz#adca350e088f0467647157652bafead6ddb8dfdb"
 
@@ -1314,6 +1308,14 @@ center-align@^0.1.1:
   dependencies:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
+
+"chai@>=1.9.2 <4.0.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/chai/-/chai-3.5.0.tgz#4d02637b067fe958bdbfdd3a40ec56fef7373247"
+  dependencies:
+    assertion-error "^1.0.1"
+    deep-eql "^0.1.3"
+    type-detect "^1.0.0"
 
 chalk@^0.4.0:
   version "0.4.0"
@@ -1823,6 +1825,12 @@ dateformat@^1.0.11, dateformat@^1.0.12:
     get-stdin "^4.0.1"
     meow "^3.3.0"
 
+debug:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.3.2.tgz#94cb466ef7d6d2c7e5245cdd6e4104f2d0d70d30"
+  dependencies:
+    ms "0.7.2"
+
 debug@^2.1.0, debug@^2.1.1, debug@^2.1.3, debug@^2.2.0, debug@2:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.3.0.tgz#3912dc55d7167fc3af17d2b85c13f93deaedaa43"
@@ -1842,6 +1850,12 @@ decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
 dedent-js@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/dedent-js/-/dedent-js-1.0.1.tgz#bee5fb7c9e727d85dffa24590d10ec1ab1255305"
+
+deep-eql@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/deep-eql/-/deep-eql-0.1.3.tgz#ef558acab8de25206cd713906d74e56930eb69f2"
+  dependencies:
+    type-detect "0.1.1"
 
 deep-equal@^1.0.0:
   version "1.0.1"
@@ -1881,6 +1895,19 @@ delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
 
+denali-babel:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/denali-babel/-/denali-babel-0.0.4.tgz#5f80dc0404c7911271d24b9f15cc4351a8cbfe30"
+  dependencies:
+    babel-plugin-transform-async-to-generator "^6.16.0"
+    babel-plugin-transform-class-properties "^6.18.0"
+    babel-preset-latest "^6.16.0"
+    bluebird "^3.4.6"
+    broccoli-babel-transpiler "^6.0.0-alpha.2"
+    denali "0.0.13"
+    eslint-config-denali "^1.1.0"
+    lodash "^4.16.4"
+
 denali-babel@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/denali-babel/-/denali-babel-0.0.1.tgz#cb122aad50b11783b41adc7176a7aac129c281a5"
@@ -1894,15 +1921,16 @@ denali-babel@^0.0.1:
     eslint-config-denali "^1.1.0"
     lodash "^4.16.4"
 
-denali-babel@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/denali-babel/-/denali-babel-0.0.2.tgz#ad6970bc20d3ef52e77e4d731e70f97f9d9b52b7"
+denali-babel@^0.0.3, denali-babel@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/denali-babel/-/denali-babel-0.0.3.tgz#bc745ec0e1b4bfbcf01e3534a92276ce1509e9ad"
   dependencies:
     babel-plugin-transform-async-to-generator "^6.16.0"
     babel-plugin-transform-class-properties "^6.18.0"
     babel-preset-latest "^6.16.0"
     bluebird "^3.4.6"
     broccoli-babel-transpiler "^6.0.0-alpha.2"
+    denali "0.0.13"
     eslint-config-denali "^1.1.0"
     lodash "^4.16.4"
 
@@ -1922,6 +1950,43 @@ denali-eslint@^0.0.3:
     eslint-config-denali "^1.1.0"
     js-string-escape "^1.0.1"
     lodash "^4.16.4"
+
+denali-eslint@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/denali-eslint/-/denali-eslint-0.0.5.tgz#d92cc374cab98c6ecd17ec9389c1454c96ab7353"
+  dependencies:
+    babel-plugin-transform-async-to-generator "^6.16.0"
+    babel-plugin-transform-class-properties "^6.18.0"
+    babel-preset-latest "^6.16.0"
+    bluebird "^3.4.6"
+    broccoli-filter "^1.2.4"
+    chalk "^1.1.3"
+    dedent-js "^1.0.1"
+    denali "0.0.13"
+    denali-babel "0.0.3"
+    eslint "^3.9.1"
+    eslint-config-denali "^1.1.0"
+    js-string-escape "^1.0.1"
+    lodash "^4.16.4"
+
+denali-mailer:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/denali-mailer/-/denali-mailer-0.0.1.tgz#36ab9b814e9441d6013b11c88892b51fd8cd5a32"
+  dependencies:
+    babel-plugin-istanbul "^2.0.3"
+    babel-plugin-transform-async-to-generator "^6.16.0"
+    babel-plugin-transform-class-properties "^6.18.0"
+    babel-preset-latest "^6.16.0"
+    bluebird "^3.4.6"
+    broccoli-filter "^1.2.4"
+    broccoli-funnel "^1.0.7"
+    broccoli-merge-trees "^1.1.4"
+    denali "0.0.13"
+    denali-babel "^0.0.3"
+    denali-eslint "^0.0.5"
+    ejs "^2.5.2"
+    lodash "^4.16.4"
+    nodemailer "^2.6.4"
 
 denali@0.0.13:
   version "0.0.13"
@@ -2054,6 +2119,10 @@ editions@^1.1.1:
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
+
+ejs@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.2.tgz#21444ba09386f0c65b6eafb96a3d51bcb3be80d1"
 
 empower-core@^0.6.1:
   version "0.6.1"
@@ -2958,7 +3027,7 @@ indent-string@^2.1.0:
   dependencies:
     repeating "^2.0.0"
 
-inflection@^1.10.0, inflection@^1.8.0:
+inflection@^1.8.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/inflection/-/inflection-1.10.0.tgz#5bffcb1197ad3e81050f8e17e21668087ee9eb2f"
 
@@ -3493,7 +3562,7 @@ lodash.assign@^3.2.0:
     lodash._createassigner "^3.0.0"
     lodash.keys "^3.0.0"
 
-lodash.assign@^4.0.0, lodash.assign@^4.0.3, lodash.assign@^4.0.6:
+lodash.assign@^4.0.3, lodash.assign@^4.0.6:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
 
@@ -3521,7 +3590,7 @@ lodash.keys@^3.0.0:
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
 
-lodash.pickby@^4.0.0, lodash.pickby@^4.6.0:
+lodash.pickby@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.pickby/-/lodash.pickby-4.6.0.tgz#7dea21d8c18d7703a27c704c15d3b84a67e33aff"
 
@@ -3553,6 +3622,10 @@ lodash@^3.10.1:
 lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.16.2, lodash@^4.16.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0:
   version "4.16.6"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.16.6.tgz#d22c9ac660288f3843e16ba7d2b5d06cca27d777"
+
+lodash@~4.9.0:
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.9.0.tgz#4c20d742f03ce85dc700e0dd7ab9bcab85e6fc14"
 
 log-symbols@^1.0.2:
   version "1.0.2"
@@ -3710,11 +3783,15 @@ mktemp@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/mktemp/-/mktemp-0.4.0.tgz#6d0515611c8a8c84e484aa2000129b98e981ff0b"
 
+mockdate:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/mockdate/-/mockdate-2.0.0.tgz#7b37940acf9c3019d8df0887926bdee1829ed61a"
+
 modify-values@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.0.tgz#e2b6cdeb9ce19f99317a53722f3dbf5df5eaaab2"
 
-moment@2.x.x:
+moment, moment@2.x.x:
   version "2.15.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.15.2.tgz#1bfdedf6a6e345f322fe956d5df5bd08a8ce84dc"
 
@@ -3766,6 +3843,19 @@ nocache@1.0.1:
   resolved "https://registry.yarnpkg.com/nocache/-/nocache-1.0.1.tgz#695c9f736926a7554f7365fa25e087941065bd36"
   dependencies:
     depd "1.1.0"
+
+nock:
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-9.0.2.tgz#f6a5f4a8d560d61f48b5ad428ccff8dc9b62701e"
+  dependencies:
+    chai ">=1.9.2 <4.0.0"
+    debug "^2.2.0"
+    deep-equal "^1.0.0"
+    json-stringify-safe "^5.0.1"
+    lodash "~4.9.0"
+    mkdirp "^0.5.0"
+    propagate "0.4.0"
+    qs "^6.0.2"
 
 node-pre-gyp@^0.6.29:
   version "0.6.31"
@@ -3826,7 +3916,7 @@ nodemailer-wellknown@0.1.10:
   version "0.1.10"
   resolved "https://registry.yarnpkg.com/nodemailer-wellknown/-/nodemailer-wellknown-0.1.10.tgz#586db8101db30cb4438eb546737a41aad0cf13d5"
 
-nodemailer@^2.4.2:
+nodemailer@^2.4.2, nodemailer@^2.6.4:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-2.6.4.tgz#5620707c55fac674b6e2e5e425708b9ad5c6b6d6"
   dependencies:
@@ -3932,6 +4022,10 @@ nyc@^8.1.0:
 oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
+
+oauth@0.9.x:
+  version "0.9.14"
+  resolved "https://registry.yarnpkg.com/oauth/-/oauth-0.9.14.tgz#c5748883a40b53de30ade9cabf2100414b8a0971"
 
 object-assign@^4.0.1, object-assign@^4.1.0:
   version "4.1.0"
@@ -4084,6 +4178,24 @@ parse-ms@^1.0.0:
 parseurl@~1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.1.tgz#c8ab8c9223ba34888aa64a297b28853bec18da56"
+
+passport-facebook:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/passport-facebook/-/passport-facebook-2.1.1.tgz#c39d0b52ae4d59163245a4e21a7b9b6321303311"
+  dependencies:
+    passport-oauth2 "1.x.x"
+
+passport-oauth2@1.x.x:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/passport-oauth2/-/passport-oauth2-1.3.0.tgz#d72b4bd62eeb807a4089ff3071a22c26c382dc0c"
+  dependencies:
+    oauth "0.9.x"
+    passport-strategy "1.x.x"
+    uid2 "0.0.x"
+
+passport-strategy@1.x.x:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
 
 path-exists@^2.0.0:
   version "2.1.0"
@@ -4263,6 +4375,10 @@ promise-map-series@^0.2.1:
   dependencies:
     rsvp "^3.0.14"
 
+propagate@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/propagate/-/propagate-0.4.0.tgz#f3fcca0a6fe06736a7ba572966069617c130b481"
+
 pseudomap@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
@@ -4275,7 +4391,7 @@ q@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.4.1.tgz#55705bcd93c5f3673530c2c2cbc0c2b3addc286e"
 
-qs@^6.0.1, qs@~6.3.0:
+qs@^6.0.1, qs@^6.0.2, qs@~6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.0.tgz#f403b264f23bc01228c74131b407f18d5ea5d442"
 
@@ -5012,6 +5128,14 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
+type-detect@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-1.0.0.tgz#762217cc06db258ec48908a1298e8b95121e8ea2"
+
+type-detect@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-0.1.1.tgz#0ba5ec2a885640e470ea4e8505971900dac58822"
+
 type-is@^1.6.13, type-is@~1.6.13:
   version "1.6.13"
   resolved "https://registry.yarnpkg.com/type-is/-/type-is-1.6.13.tgz#6e83ba7bc30cd33a7bb0b7fb00737a2085bf9d08"
@@ -5044,7 +5168,7 @@ uid-number@~0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/uid-number/-/uid-number-0.0.6.tgz#0ea10e8035e8eb5b8e4449f06da1c730663baa81"
 
-uid2@0.0.3:
+uid2@0.0.3, uid2@0.0.x:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/uid2/-/uid2-0.0.3.tgz#483126e11774df2f71b8b639dcd799c376162b82"
 

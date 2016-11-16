@@ -1,10 +1,27 @@
 import { attr, mixin, Model } from 'denali';
-import { registerable, sessionable, passwordable } from 'denali-auth';
+import {
+  authenticatable,
+  registerable,
+  sessionable,
+  passwordable,
+  oauthable,
+  confirmable,
+  lockable,
+  resetable,
+  fetchable,
+  trackable } from 'denali-auth';
 
 export default class UserModel extends mixin(Model,
+  authenticatable(),
   registerable(),
+  sessionable(),
   passwordable(),
-  sessionable()
+  oauthable({ providers: [ 'facebook' ] }),
+  confirmable(),
+  lockable(),
+  resetable(),
+  fetchable(),
+  trackable()
 ) {
 
   static firstName = attr('text');

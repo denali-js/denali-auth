@@ -6,6 +6,15 @@ export default function environmentConfig(environment) {
     ormAdapter: 'memory',
     database: {
 
+    },
+    auth: {
+      oauthProviders: {
+        facebook: {
+          clientID: 'foo',
+          clientSecret: 'bar',
+          callbackURL: 'http://example.com'
+        }
+      }
     }
   };
 

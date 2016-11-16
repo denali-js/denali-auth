@@ -102,6 +102,13 @@ registration / signup routes could be _no_ auth, or invites potentially?
 The user generally doesn't need to worry - default is session auth only, and
 for those routes like login/signup, we control the defaults anyway
 
+Each facet can also define a hook method for the following hooks:
+
+* login()
+* logout()
+* register()
+* authenticate()
+
 ----
 
 core changes:
@@ -112,3 +119,84 @@ if attribute is not defined on model, does it pass through?
   could adapters tell models what additional methods should poke through? no - consumers can get the model.record if they want, but otherwise, enfoce single interface
 
 add ability to pass params from routes.js
+
+-----
+
+
+
+We need a system of events basically. I.e. some facets don't authenticate, they only augment the authentication of any of the other strategies (i.e. trackable should trigger after an oauth login or a password login, confirmable here should be able to block login attempts for a locked out unconfirmed email)
+
+What are some possible events?
+
+* login
+  * confirmable can block if unconfirmed
+  * lockable can block if too many attempts
+  * trackable can track
+* logout
+  * trackable can track
+* register
+  * invitable can block unless invite token is provided
+  * trackable can track
+* auth request
+  * securable can block if IP switches
+  * trackable can track
+
+Seems like blocking and tracking is the big thing
+Blocking needs access to incoming request, can't just be an instance
+method with context of user record
+
+Should rough out 2fa concept too:
+  2fa would intercept normal login, send 2fa code, and block original login
+  subsequent login would re-send credentials + 2fa code, 2fa would intercept, and allow
+  generate backup codes option
+
+
+
+
+
+  ------
+
+
+
+/register
+  invitable: If invites are required, check to make sure a valid invite token is provided, and invalidate the invite upon success
+  oauthable / passwordable: Provide at least one set of authentication credentials (i.e. password, facebook token, etc)
+
+/confirm-email
+  confirmable: Validate confirmation token and associated email, then mark as confirmed
+
+/resend-email-confirmation
+  confirmable: Create and email a confirmation token
+
+/reset-password
+  resetable: Validate reset token and new password validity
+
+/send-reset-password
+  resetable: Create and email reset token
+
+/login
+  confirmable: Ensure account isn't locked out because of unconfirmed email
+  lockable: Ensure account isn't locked out because of too many attempts
+  passwordable: Validate password (if provided) and login
+  oauthable: Validate access token (if provided) and login
+  trackable: Track login data
+
+/logout
+  delete the session
+
+/invite
+  invitable: send an invite if the current user is allowed to
+
+/[any authenticated route]
+  trackable: Update tracking data (i.e. last seen) and ensure IP hasn't changed mid session (if so, logout)
+  authenticatable: Ensure session is valid and load current user
+
+
+// login is basically just generate-temporary-credentials - it's an action just
+// like send-reset-password
+
+// so the auth filter attempts to auth a request with all available strategies for the given model, unless overrides are passed in
+
+// sessionable facet defines how sessions can auth a request (i.e. #authenticate) and the login method, which *doesn't* check credentials, but instead performs the actual logging in
+// the login action uses the auth filter to ensure that the user has the right to call the login method
+// so the login method should really be called createSession (full circle here) to disambiguate between login attempts and the act of logging in

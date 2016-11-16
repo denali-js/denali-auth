@@ -7,116 +7,90 @@ import {
   Request,
   MockRequest,
   MockResponse,
+  Model,
   Container } from 'denali';
-import { authenticate } from 'denali-auth';
+import { authenticate, authenticatable } from 'denali-auth';
 
-
-test('401s when no credentials are provided for a protected action', async (t) => {
-  class TestAction extends mixin(Action, authenticate()) {
+test.beforeEach((t) => {
+  t.context.TestAction = class TestAction extends mixin(Action, authenticate()) {
+    logger = {
+      error() {
+        console.log(...arguments); // eslint-disable-line no-console
+      }
+    };
     respond() {}
-  }
-  let container = new Container();
-  container.register('model:user', {
-    authenticateRequest() {
-      return null;
-    }
-  });
-  let action = new TestAction({
-    container,
+  };
+  t.context.User = class User extends mixin(Model, authenticatable()) {};
+  t.context.container = new Container();
+  t.context.container.register('model:user', t.context.User);
+  t.context.action = new t.context.TestAction({
+    container: t.context.container,
     request: new Request(new MockRequest()),
     response: new MockResponse()
   });
-
-  let result = action.run();
-  t.throws(result, /Missing credentials/);
-  t.throws(result, Errors.Unauthorized);
 });
 
-test('returns errors from strategies that throw/reject', async (t) => {
-  class TestAction extends mixin(Action, authenticate()) {
-    respond() {}
-  }
-  let container = new Container();
-  container.register('model:user', {
-    authenticateRequest() {
-      throw new Errors.BadRequest('Improperly formatted foo param');
+test('401s when no credentials are provided for a protected action', async (t) => {
+  let { container, User, action } = t.context;
+  container.register('model:user', class FailingUser extends User {
+    static async authenticateRequest() {
+      throw new Errors.Unauthorized('Foobar');
     }
   });
-  let action = new TestAction({
-    container,
-    request: new Request(new MockRequest()),
-    response: new MockResponse()
-  });
 
-  let result = action.run();
-  t.throws(result, /Improperly formatted foo param/);
-  t.throws(result, Errors.BadRequest);
+  try {
+    await action.run();
+    t.fail();
+  } catch (error) {
+    t.regex(error.message, /Foobar/);
+    t.true(error instanceof Errors.Unauthorized);
+  }
 });
 
 test('tries strategies according to mixin order', async (t) => {
+  let { container, User, action } = t.context;
   let sequence = [];
-  class TestAction extends mixin(Action, authenticate()) {
-    respond() {}
-  }
-  class Model {}
   let one = createMixin((Base) => {
-    return class extends Base {
-      static authenticateRequest() {
-        sequence.push(1);
-        return null;
-      }
-    };
-  });
-  let two = createMixin((Base) => {
-    return class extends Base {
-      static authenticateRequest() {
+    return class One extends Base {
+      static async authenticateRequest() {
         sequence.push(2);
         return {};
       }
     };
   });
-  class User extends mixin(Model, one(), two()) {}
-  let container = new Container();
-  container.register('model:user', User);
-  let action = new TestAction({
-    container,
-    request: new Request(new MockRequest()),
-    response: new MockResponse()
+  let two = createMixin((Base) => {
+    return class Two extends Base {
+      static async authenticateRequest() {
+        sequence.push(1);
+        throw new Error();
+      }
+    };
   });
+  container.register('model:user', class extends mixin(User, one(), two()) {});
 
   await action.run();
   t.deepEqual(sequence, [ 1, 2 ]);
 });
 
-test('a successful strategy skips subsequent strategies', async (t) => {
+test('a successful strategy skips remaining strategies', async (t) => {
+  let { container, User, action } = t.context;
   t.plan(1);
-  class TestAction extends mixin(Action, authenticate()) {
-    respond() {}
-  }
-  class Model {}
   let one = createMixin((Base) => {
-    return class extends Base {
-      static authenticateRequest() {
+    return class One extends Base {
+      static async authenticateRequest() {
+        t.fail();
+      }
+    };
+  });
+  let two = createMixin((Base) => {
+    return class Two extends Base {
+      static async authenticateRequest() {
         t.pass();
         return {};
       }
     };
   });
-  let two = createMixin((Base) => {
-    return class extends Base {
-      static authenticateRequest() {
-        t.fail();
-      }
-    };
-  });
-  class User extends mixin(Model, one(), two()) {}
-  let container = new Container();
-  container.register('model:user', User);
-  let action = new TestAction({
-    container,
-    request: new Request(new MockRequest()),
-    response: new MockResponse()
-  });
+  container.register('model:user', class extends mixin(User, one(), two()) {});
 
   await action.run();
 });

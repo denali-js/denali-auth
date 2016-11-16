@@ -1,8 +1,16 @@
 {
-  "presets": [ "es2015" ],
+  "presets": [ "latest" ],
   "plugins": [
-    "transform-class-properties"
-  ]
+    "transform-class-properties",
+    "transform-async-to-generator"
+  ],
+  "ignore": [
+    "blueprints/*/files/**",
+    "test/dummy/**"
+  ],
+  "env": {
+    "test": {
+      "plugins": [ "istanbul" ]
+    }
+  }
 }
-
-
