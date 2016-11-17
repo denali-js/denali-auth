@@ -1,6 +1,6 @@
 import test from 'ava';
 import { AppAcceptanceTest } from 'denali';
-import { all } from 'bluebird';
+import { resolve } from 'bluebird';
 import times from 'lodash/times';
 
 test('locks out login attempts for short period after several failed attempts', async (t) => {
@@ -15,14 +15,13 @@ test('locks out login attempts for short period after several failed attempts', 
       attributes: loginCredentials
     }
   });
-
-  let results = await all(times(10, async () => {
+  let results = await resolve(times(10)).map(async () => {
     let { status } = await app.post('/users/auth/login', {
       email: loginCredentials.email,
       password: 'wrong'
     });
     return status;
-  }));
+  }, { concurrency: 1 });
   console.log(results);
   t.truthy(results.find((status) => status === 429));
 });
