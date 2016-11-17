@@ -5,6 +5,7 @@
     "denali": "*",
     "denali-babel": "*",
     "denali-eslint": "*",
-    "denali-auth": "*"
+    "denali-auth": "*",
+    "denali-mailer": "*"
   }
 }

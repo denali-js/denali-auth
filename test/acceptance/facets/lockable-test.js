@@ -22,6 +22,5 @@ test('locks out login attempts for short period after several failed attempts', 
     });
     return status;
   }, { concurrency: 1 });
-  console.log(results);
   t.truthy(results.find((status) => status === 429));
 });

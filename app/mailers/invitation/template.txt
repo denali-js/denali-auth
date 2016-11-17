@@ -1,0 +1,8 @@
+Congratulations, you've been invited!
+
+Here's your invite code: <%= invitation.token %>.
+
+
+Welcome aboard,
+
+The team
