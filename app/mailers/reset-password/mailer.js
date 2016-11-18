@@ -2,10 +2,10 @@ import { Mailer } from 'denali-mailer';
 
 export default class InvitationMailer extends Mailer {
 
-  subject = "You're invited!";
+  subject = 'Reset your password';
 
-  to({ invitation }) {
-    return invitation.invitedEmail;
+  to({ user }) {
+    return user.email;
   }
 
 }

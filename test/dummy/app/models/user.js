@@ -10,14 +10,17 @@ import {
   resetable,
   fetchable,
   trackable } from 'denali-auth';
+import moment from 'moment';
 
-export default class UserModel extends mixin(Model,
+export default class User extends mixin(Model,
   authenticatable(),
   registerable(),
   sessionable(),
   oauthable({ providers: [ 'facebook' ] }),
   passwordable(),
-  confirmable(),
+  confirmable({
+    lockoutAfter: moment.duration(7, 'days')
+  }),
   lockable(),
   resetable(),
   fetchable(),

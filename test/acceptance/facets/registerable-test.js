@@ -15,34 +15,6 @@ test('allows users to register', async (t) => {
   };
   let { status, body } = await app.post('/users/auth/register', newUser);
   t.is(status, 201);
-  t.is(body.data.attributes.email, 'dave@example.com');
-  t.falsy(body.data.attributes.password);
-});
-
-test('should reject registration payloads without an email', async (t) => {
-  let app = new AppAcceptanceTest();
-  let newUser = {
-    data: {
-      type: 'user',
-      attributes: {
-        password: '123'
-      }
-    }
-  };
-  let { status } = await app.post('/users/auth/register', newUser);
-  t.is(status, 422);
-});
-
-test('should reject registration payloads without a password', async (t) => {
-  let app = new AppAcceptanceTest();
-  let newUser = {
-    data: {
-      type: 'user',
-      attributes: {
-        email: 'dave@example.com'
-      }
-    }
-  };
-  let { status } = await app.post('/users/auth/register', newUser);
-  t.is(status, 422);
+  t.is(body.email, 'dave@example.com');
+  t.falsy(body.password);
 });

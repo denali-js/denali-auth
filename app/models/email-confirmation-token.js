@@ -1,4 +1,6 @@
+import { attr } from 'denali';
 import Token from './token';
 
-export default class ConfirmationToken extends Token {
+export default class EmailConfirmationToken extends Token {
+  static email = attr('text');
 }

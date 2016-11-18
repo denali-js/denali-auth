@@ -13,7 +13,7 @@ test('sends an invite to users', async (t) => {
   };
   let db = app.lookup('orm-adapter:memory')._cache;
   let invitations = db.invitation = {};
-  invitations[100] = { token: 'foo', userType: 'user', fromType: 'user', fromId: -1 };
+  invitations[100] = { token: 'foo', userType: 'invitable-user', fromType: 'invitable-user', fromId: -1 };
   await app.post('/invitable-users/auth/register', {
     data: {
       type: 'user',
@@ -21,6 +21,7 @@ test('sends an invite to users', async (t) => {
     }
   });
   let { body } = await app.post('/invitable-users/auth/login', loginCredentials);
+  t.truthy(body.token);
   app.setHeader('Authorization', `TOKEN ${ body.token }`);
 
   let { status } = await app.post('/invitable-users/auth/send-invitation', {

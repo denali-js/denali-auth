@@ -7,7 +7,7 @@ import {
   invitable,
   fetchable } from 'denali-auth';
 
-export default class UserModel extends mixin(Model,
+export default class InvitableUser extends mixin(Model,
   authenticatable(),
   registerable(),
   sessionable(),

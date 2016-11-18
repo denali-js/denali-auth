@@ -15,7 +15,7 @@ test('allows users to create a session', async (t) => {
     }
   });
 
-  let { status, body } = await app.post('/users/auth/sessions', loginCredentials);
+  let { status, body } = await app.post('/users/auth/login', loginCredentials);
   t.is(status, 201);
   t.truthy(body.token);
   t.falsy(body.password);
@@ -33,9 +33,9 @@ test('allows users to delete a session (logout)', async (t) => {
       attributes: loginCredentials
     }
   });
-  let { body } = await app.post('/users/auth/sessions', loginCredentials);
+  let { body } = await app.post('/users/auth/login', loginCredentials);
 
-  let { status } = await app.delete('/users/auth/sessions', {
+  let { status } = await app.delete('/users/auth/logout', {
     headers: {
       Authorization: `TOKEN ${ body.token }`
     }
@@ -55,7 +55,8 @@ test('allows requests with valid session tokens', async (t) => {
       attributes: loginCredentials
     }
   });
-  let { body } = await app.post('/users/auth/sessions', loginCredentials);
+  let { body } = await app.post('/users/auth/login', loginCredentials);
+  t.truthy(body.token);
   app.setHeader('Authorization', `TOKEN ${ body.token }`);
 
   let { status } = await app.get('/');
@@ -74,9 +75,9 @@ test('does not authenticate requests with invalid auth header', async (t) => {
       attributes: loginCredentials
     }
   });
-  await app.post('/users/auth/sessions', loginCredentials);
+  await app.post('/users/auth/login', loginCredentials);
   app.setHeader('Authorization', 'TOKEN foo');
 
   let { status } = await app.get('/');
-  t.is(status, 200);
+  t.is(status, 401);
 });

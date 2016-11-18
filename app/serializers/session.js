@@ -3,12 +3,12 @@ import { kebabCase } from 'lodash';
 
 export default class SessionSerializer extends FlatSerializer {
 
-  static attributes = [
+  attributes = [
     'token',
     'expiresAt'
   ]
 
-  static serializeAttributeName(name) {
+  serializeAttributeName(name) {
     return kebabCase(name);
   }
 

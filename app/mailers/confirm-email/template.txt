@@ -1,0 +1,10 @@
+Please confirm your email address.
+
+Here's your confirmation token:
+
+<%= token.token %>
+
+
+Thanks,
+
+The team

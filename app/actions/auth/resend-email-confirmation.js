@@ -4,8 +4,8 @@ export default class SendEmailConfirmation extends Action {
 
   async respond(params) {
     let unconfirmedEmail = params.email;
-    let User = params.modelType;
-    let user = await User.find({ unconfirmedEmail });
+    let User = this.modelFor(params.modelName);
+    let user = await User.findOne({ unconfirmedEmail });
     if (!user) {
       throw new Errors.NotFound('That email is either already confirmed, or not on file for an existing user');
     }

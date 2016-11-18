@@ -1,0 +1,10 @@
+Forgot your password?
+
+Don't worry, it happens to us too! Here's your reset token:
+
+<%= token.token %>
+
+
+Thanks,
+
+The team
