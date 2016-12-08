@@ -1,5 +1,5 @@
 import { Action, mixin } from 'denali';
-import { authenticate } from 'denali-auth';
+import { authenticate } from '../../../lib';
 
 export default class SendInvitationAction extends mixin(Action, authenticate()) {
 
