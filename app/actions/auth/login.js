@@ -1,9 +1,7 @@
-import { mixin, Action, Response } from 'denali';
+import { Action, Response } from 'denali';
 import { authenticate } from '../../../lib';
 
-export default class LoginAction extends mixin(Action,
-  authenticate({ allowedStrategies: 'all' })
-) {
+export default class LoginAction extends Action.mixin(authenticate({ allowedStrategies: 'all' })) {
 
   serializer = 'session';
 

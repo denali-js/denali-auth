@@ -1,7 +1,7 @@
-import { Action, Response, mixin } from 'denali';
+import { Action, Response } from 'denali';
 import { authenticate } from '../../../lib';
 
-export default class DeleteSessionAction extends mixin(Action, authenticate()) {
+export default class DeleteSessionAction extends Action.mixin(authenticate) {
 
   async respond() {
     await this.session.delete();

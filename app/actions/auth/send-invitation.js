@@ -1,7 +1,7 @@
-import { Action, mixin } from 'denali';
+import { Action } from 'denali';
 import { authenticate } from '../../../lib';
 
-export default class SendInvitationAction extends mixin(Action, authenticate()) {
+export default class SendInvitationAction extends Action.mixin(authenticate) {
 
   async respond(params) {
     let email = params.email;
