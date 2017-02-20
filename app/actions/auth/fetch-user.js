@@ -1,7 +1,7 @@
-import { mixin, Action } from 'denali';
+import { Action } from 'denali';
 import { authenticate } from '../../../lib';
 
-export default class FetchUserAction extends mixin(Action, authenticate()) {
+export default class FetchUserAction extends Action.mixin(authenticate) {
 
   async respond() {
     return this.currentUser;

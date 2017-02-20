@@ -13,7 +13,7 @@ export default class ConfirmEmailAction extends Action {
       throw new Errors.UnprocessableEntity('Invalid confirmation token');
     }
     let User = this.modelFor(params.modelName);
-    let user = await User.findOne(token.userId);
+    let user = await User.find(token.userId);
     await user.confirmEmail(token);
     return new Response(204);
   }

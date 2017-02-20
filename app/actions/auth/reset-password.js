@@ -12,7 +12,7 @@ export default class ResetPasswordAction extends Action {
       throw new Errors.UnprocessableEntity('Invalid reset token');
     }
     let User = this.modelFor(params.modelName);
-    let user = await User.findOne(token.userId);
+    let user = await User.find(token.userId);
     if (!params.password) {
       throw new Errors.UnprocessableEntity('You must supply a new `password` to reset the password for this account.');
     }
