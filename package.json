@@ -1,6 +1,6 @@
 {
   "name": "denali-auth",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "coverage": "scripts/coverage.sh",
     "preversion": "scripts/preversion.sh",
