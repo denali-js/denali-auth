@@ -43,13 +43,13 @@
     "moment": "^2.15.2"
   },
   "devDependencies": {
-    "ava": "^0.17.0",
-    "babel-plugin-istanbul": "^2.0.1",
+    "ava": "^0.18.2",
+    "babel-plugin-istanbul": "^4.0.0",
     "codeclimate-test-reporter": "^0.4.0",
     "nock": "^9.0.2",
-    "nyc": "^8.1.0",
+    "nyc": "^10.1.2",
     "passport-facebook": "^2.1.1",
-    "standard-version": "^2.4.0"
+    "standard-version": "^4.0.0"
   },
   "ava": {
     "plugins": [],
