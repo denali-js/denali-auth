@@ -8,7 +8,7 @@ export default class SessionSerializer extends FlatSerializer {
     'expiresAt'
   ]
 
-  serializeAttributeName(name) {
+  serializeAttributeName(name: string) {
     return kebabCase(name);
   }
 

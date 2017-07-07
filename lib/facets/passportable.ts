@@ -1,6 +1,6 @@
-import { createMixin, Errors as createError, Response } from 'denali';
+import { createMixin, Errors as createError, Response, Model, Action } from 'denali';
 
-export default createMixin((MixinBase, options = {}) => {
+export default createMixin((BaseModel: typeof Model, options = {}) => {
   let Strategy;
   if (typeof options.strategy === 'string') {
     Strategy = require(`passport-${ options.strategy }`);
@@ -11,23 +11,23 @@ export default createMixin((MixinBase, options = {}) => {
 
   let strategy = new Strategy(options);
 
-  return class PassportableMixin extends MixinBase {
+  return class PassportableMixin extends BaseModel {
 
     static strategyName = 'passport';
 
-    static authenticateRequest(action, invocationOptions) {
+    static authenticateRequest(action: Action, invocationOptions: any) {
       return new Promise((resolve, reject) => {
         let reqStrategy = Object.create(strategy);
-        reqStrategy.fail = function fail(challenge, status = 401) {
+        reqStrategy.fail = function fail(challenge: any, status = 401) {
           reject(createError(status, challenge));
         };
-        reqStrategy.success = function success(user, info) {
+        reqStrategy.success = function success(user: Model, info: any) {
           resolve({ user, info });
         };
-        reqStrategy.redirect = function redirect(url, status = 302) {
+        reqStrategy.redirect = function redirect(url: string, status = 302) {
           resolve(new Response(status, { headers: { Location: url } }));
         };
-        reqStrategy.error = function error(err) {
+        reqStrategy.error = function error(err: Error) {
           reject(err);
         };
         reqStrategy.authenticate(action.request, invocationOptions);

@@ -1,13 +1,15 @@
-import { Errors, createMixin, hasMany } from 'denali';
-import moment from 'moment';
-import cookie from 'cookie';
-import createDebug from 'debug';
-import upperFirst from 'lodash/upperFirst';
-import defaults from 'lodash/defaults';
+import { Errors, createMixin, hasMany, Model, Action } from 'denali';
+import * as moment from 'moment';
+import * as cookie from 'cookie';
+import * as createDebug from 'debug';
+import {
+  upperFirst,
+  defaults
+} from 'lodash';
 
 const debug = createDebug('denali-auth:sessionable');
 
-export default createMixin((MixinBase, options = {}) => {
+export default createMixin((BaseModel: typeof Model, options = {}) => {
   options = defaults(options, {
     transports: [ 'header' ],
     schemes: [ 'TOKEN' ],
@@ -16,18 +18,18 @@ export default createMixin((MixinBase, options = {}) => {
     ttl: moment.duration(2, 'weeks')
   });
 
-  return class SessionableMixin extends MixinBase {
+  return class SessionableMixin extends BaseModel {
 
     static isSessionable = true;
     static strategyName = 'session';
 
     static sessions = hasMany('session');
 
-    async canLogin() {
+    async canLogin(action: Action, params: any) {
       return true;
     }
 
-    async login(action, params) {
+    async login(action: Action, params: any) {
       await this.canLogin(action, params);
       let Session = this.modelFor('session');
       let session = new Session({
@@ -38,7 +40,7 @@ export default createMixin((MixinBase, options = {}) => {
       return session.save();
     }
 
-    static async authenticateRequest(action) {
+    static async authenticateRequest(action: Action) {
       debug(`[${ action.request.id }]: attempting to authenticate via session token`);
       let token = this.extractSessionToken(action);
       if (!token) {
@@ -55,9 +57,9 @@ export default createMixin((MixinBase, options = {}) => {
       return session.getUser();
     }
 
-    static extractSessionToken(action) {
+    static extractSessionToken(action: Action) {
       for (let transport of options.transports) {
-        let extractor = this[`extract${ upperFirst(transport) }`];
+        let extractor = (<any>this)[`extract${ upperFirst(transport) }`];
         let result = extractor.call(this, action);
         if (result) {
           return result;
@@ -65,7 +67,7 @@ export default createMixin((MixinBase, options = {}) => {
       }
     }
 
-    static extractHeader(action) {
+    static extractHeader(action: Action) {
       let authorizationHeader = action.request.get('authorization') || '';
       let [ scheme, sessionToken ] = authorizationHeader.split(' ');
       if (options.schemes.includes(scheme)) {
@@ -73,14 +75,14 @@ export default createMixin((MixinBase, options = {}) => {
       }
     }
 
-    static extractCookie(action) {
+    static extractCookie(action: Action) {
       let cookies = action.request.get('cookie');
       if (cookies) {
         return cookie.parse(cookies)[options.cookieName];
       }
     }
 
-    static extractQuery(action) {
+    static extractQuery(action: Action) {
       return action.request.query[options.queryParam];
     }
 

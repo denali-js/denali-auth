@@ -1,14 +1,14 @@
-import { createMixin } from 'denali';
-import createDebug from 'debug';
+import { createMixin, Model } from 'denali';
+import * as createDebug from 'debug';
 
 const debug = createDebug('denali-auth:registerable');
 
-export default createMixin((MixinBase) => {
-  return class RegisterableMixin extends MixinBase {
+export default createMixin((BaseModel: typeof Model) => {
+  return class RegisterableMixin extends BaseModel {
 
     static isRegisterable = true;
 
-    static async register(attributes) {
+    static async register(attributes: any) {
       let user = await this.create(attributes);
       debug(`registering ${ this.type }: %o`, user);
       return user;

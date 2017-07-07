@@ -2,11 +2,11 @@ import { Action, Response, Errors } from 'denali';
 
 export default class ResetPasswordAction extends Action {
 
-  lookupToken(token) {
+  lookupToken(token: string) {
     return this.modelFor('password-reset-token').findOne({ token });
   }
 
-  async respond(params) {
+  async respond(params: any) {
     let token = await this.lookupToken(params.token);
     if (!token) {
       throw new Errors.UnprocessableEntity('Invalid reset token');

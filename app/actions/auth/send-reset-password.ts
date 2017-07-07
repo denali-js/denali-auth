@@ -2,7 +2,7 @@ import { Action, Response, Errors } from 'denali';
 
 export default class SendResetPassword extends Action {
 
-  async respond(params) {
+  async respond(params: any) {
     let email = params.email;
     let User = this.modelFor(params.modelName);
     let user = await User.find({ email });

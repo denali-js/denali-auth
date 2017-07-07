@@ -1,17 +1,20 @@
-import { createMixin, hasOne, attr, Errors } from 'denali';
-import createDebug from 'debug';
+import { createMixin, hasOne, attr, Errors, Model } from 'denali';
+import * as createDebug from 'debug';
+import { returnof } from 'denali-typescript';
+import RegisterableMixin from './registerable';
 
 const debug = createDebug('denali-auth:invitable');
+const Registerable = returnof(RegisterableMixin._factory, Model);
 
-export default createMixin((MixinBase) =>
-  class InvitableMixin extends MixinBase {
+export default createMixin((BaseModel: typeof Registerable) =>
+  class InvitableMixin extends BaseModel {
 
     static isInvitable = true;
 
     static invitation = hasOne('invitation');
     static invitationUsedAt = attr('date');
 
-    static async invite(email, from, resend) {
+    static async invite(email: string, from: Model, resend: boolean) {
       let user = await this.findOne({ email });
       if (user) {
         throw new Errors.Conflict('User already exists');
@@ -31,11 +34,11 @@ export default createMixin((MixinBase) =>
         throw new Errors.Conflict('Invitation already sent');
       }
       debug(`emailing invitation to ${ email }`);
-      await this.service('mailer').send('invitation', { invitation });
+      await (<any>this.service('mailer')).send('invitation', { invitation });
       return invitation;
     }
 
-    static async register(attributes) {
+    static async register(attributes: any) {
       debug(`checking in new user registration has a valid invitation (invite token: ${ attributes.invitation })`);
       if (!attributes.invitation) {
         throw new Errors.UnprocessableEntity('Missing invitation code');
@@ -55,7 +58,7 @@ export default createMixin((MixinBase) =>
       invitation.usedAt = new Date();
       await invitation.save();
       attributes.invitation = invitation;
-      return super.register(...arguments);
+      return super.register(attributes);
     }
 
   }

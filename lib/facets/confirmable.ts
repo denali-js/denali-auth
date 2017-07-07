@@ -1,16 +1,32 @@
-import { createMixin, hasOne, attr, Errors } from 'denali';
-import moment from 'moment';
-import assert from 'assert';
-import defaults from 'lodash/defaults';
+import {
+  defaults
+} from 'lodash';
+import * as moment from 'moment';
+import * as assert from 'assert';
+import { createMixin, hasOne, attr, Errors, Model } from 'denali';
+import { returnof } from 'denali-typescript';
+import RegisterableMixin from './registerable';
 
-export default createMixin((Base, options) => {
+const Registerable = returnof(RegisterableMixin._factory, Model);
+
+export default createMixin((BaseModel: typeof Registerable, options) => {
   options = defaults(options, {
     expiresAfter: moment.duration(14, 'days'),
     lockoutAfter: false,
     reconfirmOnChange: true
   });
 
-  return class ConfirmableMixin extends Base {
+  /**
+   * Adds email confirmation. New users will be sent an email at their email address with a link
+   * which contains a token that can be used to confirm their email address is valid. The link is
+   * set in the `confirm-email` mailer template - you should change it to map to your frontend,
+   * which should then extract the token and hit the API to confirm it.
+   *
+   * This mixin leverages two hooks: canLogin() (to block login attempts for users with old
+   * unconfirmed emails) and register() (to record their unconfirmed email and trigger the inital
+   * confirmation email send).
+   */
+  return class ConfirmableMixin extends BaseModel {
 
     static isConfirmable = true;
 
@@ -31,7 +47,7 @@ export default createMixin((Base, options) => {
       return super.canLogin();
     }
 
-    static async register(attributes) {
+    static async register(attributes: any) {
       attributes.unconfirmedEmail = attributes.email;
       attributes.emailConfirmed = false;
       let user = await super.register(attributes);
@@ -39,7 +55,7 @@ export default createMixin((Base, options) => {
       return user;
     }
 
-    async sendConfirmationEmail(email) {
+    async sendConfirmationEmail(email: string) {
       let ConfirmationToken = this.modelFor('email-confirmation-token');
       let token = new ConfirmationToken({
         email,
@@ -48,10 +64,10 @@ export default createMixin((Base, options) => {
         expiresAt: moment() + options.lockoutAfter
       });
       await token.save();
-      return this.service('mailer').send('confirm-email', { to: email, user: this, token });
+      return (<any>this.service('mailer')).send('confirm-email', { to: email, user: this, token });
     }
 
-    async confirmEmail(token) {
+    async confirmEmail(token: Model) {
       let ConfirmationToken = this.modelFor('email-confirmation-token');
       let inFlightToken = await ConfirmationToken.findOne({ userId: this.id, userType: this.type });
       if (inFlightToken) {
@@ -68,8 +84,8 @@ export default createMixin((Base, options) => {
       token.delete();
     }
 
-    async save() {
-      // TODO: can we support dirty state like this at the Denali Model interface?
+    // TODO: can we support dirty state like this at the Denali Model interface?
+    // async save() {
       // if (options.reconfirmOnChange) {
       //   if (this.isDirty('email')) {
       //     this.unconfirmedEmail = this.email;
@@ -79,8 +95,8 @@ export default createMixin((Base, options) => {
       //   this.sendConfirmationEmail(this.unconfirmedEmail);
       //   return result;
       // }
-      return super.save(...arguments);
-    }
+      // return super.save(...arguments);
+    // }
 
   };
 });

@@ -2,7 +2,7 @@ import { Action, Response } from 'denali';
 
 export default class CreateRegistration extends Action {
 
-  async respond(params) {
+  async respond(params: any) {
     let User = this.modelFor(params.modelName);
     let attributes = params.data.attributes;
     let user = await User.register(attributes);

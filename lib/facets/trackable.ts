@@ -1,10 +1,13 @@
-import { createMixin, attr } from 'denali';
-import createDebug from 'debug';
+import { createMixin, attr, Model, Action } from 'denali';
+import * as createDebug from 'debug';
+import SessionableMixin from './sessionable';
+import { returnof } from 'denali-typescript';
 
 const debug = createDebug('denali-auth:trackable');
+const Sessionable = returnof(SessionableMixin._factory, Model);
 
-export default createMixin((MixinBase) =>
-  class TrackableMixin extends MixinBase {
+export default createMixin((BaseModel: typeof Sessionable) =>
+  class TrackableMixin extends BaseModel {
 
     static isTrackable = true;
 
@@ -12,9 +15,9 @@ export default createMixin((MixinBase) =>
     static lastIp = attr('text');
     static loginCount = attr('number');
 
-    async login(action) {
+    async login(action: Action, params: any) {
       debug('updating tracking data for current user');
-      let session = await super.login(...arguments);
+      let session = await super.login(action, params);
       let user = await session.getUser();
       user.lastLoginAt = new Date();
       user.lastIp = action.request.ip;

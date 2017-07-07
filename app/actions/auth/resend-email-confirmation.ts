@@ -2,7 +2,7 @@ import { Action, Response, Errors } from 'denali';
 
 export default class SendEmailConfirmation extends Action {
 
-  async respond(params) {
+  async respond(params: any) {
     let unconfirmedEmail = params.email;
     let User = this.modelFor(params.modelName);
     let user = await User.findOne({ unconfirmedEmail });

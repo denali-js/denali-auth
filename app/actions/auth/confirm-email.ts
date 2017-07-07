@@ -2,12 +2,12 @@ import { Action, Response, Errors } from 'denali';
 
 export default class ConfirmEmailAction extends Action {
 
-  lookupToken(token) {
+  lookupToken(token: string) {
     let ConfirmationToken = this.modelFor('email-confirmation-token');
     return ConfirmationToken.findOne({ token });
   }
 
-  async respond(params) {
+  async respond(params: any) {
     let token = await this.lookupToken(params.token);
     if (!token) {
       throw new Errors.UnprocessableEntity('Invalid confirmation token');

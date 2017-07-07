@@ -1,20 +1,24 @@
-import { createMixin } from 'denali';
-import upperFirst from 'lodash/upperFirst';
-import filter from 'lodash/filter';
-import defaults from 'lodash/defaults';
+import {
+  upperFirst,
+  filter,
+  defaults
+} from 'lodash';
+import { createMixin, Action, Model } from 'denali';
+import { IAuthenticable } from './facets/authenticatable';
 
-export default createMixin(function Authenticate(BaseAction, options) {
+export default createMixin(function(BaseAction: typeof Action, options: any) {
   defaults(options, {
     modelTypes: null,
     allowedStrategies: [ 'session' ]
   });
 
-
-  return class AuthenticateMixin extends BaseAction {
+  abstract class AuthenticateMixin extends BaseAction {
 
     static before = [ 'authenticate' ];
 
-    async authenticate(params) {
+    currentUser: Model = null;
+
+    async authenticate(params: any) {
       let Models = this._findAuthenticatableModels();
       let failureReason;
       while (Models.length > 0) {
@@ -24,7 +28,7 @@ export default createMixin(function Authenticate(BaseAction, options) {
         }
         let user;
         try {
-          user = await Model.authenticate(this, params, options.allowedStrategies);
+          user = await (<Model & IAuthenticable>Model).authenticate(this, params, options.allowedStrategies);
           this.currentUser = user;
           return;
         } catch (e) {
@@ -34,12 +38,14 @@ export default createMixin(function Authenticate(BaseAction, options) {
       throw failureReason;
     }
 
+    private _authenticatableModels: Model[];
+
     _findAuthenticatableModels() {
       if (!this._authenticatableModels) {
         if (typeof options.modelTypes === 'string') {
           this._authenticatableModels = this.container.lookup(`model:${ options.modelTypes }`);
         } else if (Array.isArray(options.modelTypes)) {
-          this._authenticatableModels = options.modelTypes.map((type) => {
+          this._authenticatableModels = options.modelTypes.map((type: string) => {
             return this.container.lookup(`model:${ type }`);
           });
         } else {
@@ -50,5 +56,7 @@ export default createMixin(function Authenticate(BaseAction, options) {
       return this._authenticatableModels.slice(0);
     }
 
-  };
+  }
+
+  return AuthenticateMixin;
 });

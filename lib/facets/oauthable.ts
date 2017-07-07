@@ -1,35 +1,48 @@
-import { attr, createMixin, Errors, Response } from 'denali';
-import createDebug from 'debug';
-import upperFirst from 'lodash/upperFirst';
-import camelCase from 'lodash/camelCase';
-import forEach from 'lodash/forEach';
+import {
+  upperFirst,
+  camelCase,
+  forEach
+} from 'lodash';
+import { attr, createMixin, Errors, Response, Model, Action } from 'denali';
+import * as createDebug from 'debug';
+
 const debug = createDebug('denali-auth:oauthable');
 const createError = Errors;
 
-export default createMixin((MixinBase, options = {}) => {
+export interface ProviderConfig {
+  type: string;
+  Strategy: any;
+  strategy: any;
+  options?: object;
+  attributesFromProfile(results: any): object;
+}
+
+export default createMixin((BaseModel: typeof Model, options: { providers?: (string | { type: string })[] } = {}) => {
   if (!options.providers || options.providers.length === 0) {
     throw new Error('You must provide at least one provider to the oauthable({ providers: [] }) mixin');
   }
   // Loop through requested providers, load the passport strategy for each, and
   // load it
-  let providers = {};
+  let providers: { [type: string]: ProviderConfig } = {};
   options.providers.forEach((providerConfig) => {
     let config;
     if (typeof providerConfig === 'string') {
       let type = providerConfig;
-      config = providers[type] = { type };
+      config = providers[type] = <ProviderConfig>{ type };
     } else {
-      config = providers[providerConfig.type] = providerConfig;
+      config = providers[providerConfig.type] = <ProviderConfig>providerConfig;
     }
     config.Strategy = require(`passport-${ config.type }`);
   });
 
-  class OAuthableMixin extends MixinBase {
+  class OAuthableMixin extends BaseModel {
+
+    [attr: string]: any;
 
     static isOauthable = true;
     static strategyName = 'oauth';
 
-    static authenticateRequest(action, params, User) {
+    static authenticateRequest(action: Action, params: any, User: Model) {
       debug(`[${ action.request.id }]: attempting to authenticate`);
       if (!params.provider) {
         throw new Errors.BadRequest(`No OAuth provider was specified, unable to attempt OAuth login`);
@@ -50,7 +63,7 @@ export default createMixin((MixinBase, options = {}) => {
       // cache the strategy for later use
       if (!provider.strategy) {
         debug(`caching ${ provider.type } strategy instance`);
-        provider.strategy = new provider.Strategy(provider.options, (accessToken, refreshToken, profile, cb) => {
+        provider.strategy = new provider.Strategy(provider.options, (accessToken: string, refreshToken: string, profile: any, cb: (err: Error, data: any) => void) => {
           // We hijack this callback - normally, you pass back the user, but we
           // override below since we don't have a reference to the model class up
           // here yet. So we just kick all the data out and handle the rest in our
@@ -62,7 +75,7 @@ export default createMixin((MixinBase, options = {}) => {
       return new Promise((resolve, reject) => {
         let strategy = Object.create(provider.strategy);
         debug(`[${ action.request.id }]: augmenting strategy instance for this request`);
-        strategy.success = async (results) => {
+        strategy.success = async (results: { accessToken: string, refreshToken: string, profile: any }) => {
           debug(`[${ action.request.id }]: success! third party granted access token, trying to lookup matching user by profile id`);
           // This method is invoked by the cb from above. Here, we find the user
           // that matches those credentials now that we have a reference to the
@@ -82,15 +95,15 @@ export default createMixin((MixinBase, options = {}) => {
             reject(error);
           }
         };
-        strategy.fail = function fail(challenge, status = 401) {
+        strategy.fail = function fail(challenge: any, status = 401) {
           debug(`[${ action.request.id }]: strategy failed`);
           reject(createError(status, challenge));
         };
-        strategy.redirect = function redirect(url, status = 302) {
+        strategy.redirect = function redirect(url: string, status = 302) {
           debug(`[${ action.request.id }]: strategy redirected to ${ url }`);
           resolve(new Response(status, { headers: { Location: url } }));
         };
-        strategy.error = function error(err) {
+        strategy.error = function error(err: Error) {
           debug(`[${ action.request.id }]: strategy errored`);
           reject(err);
         };
@@ -99,7 +112,7 @@ export default createMixin((MixinBase, options = {}) => {
       });
     }
 
-    static async registerFromProvider(type, results, User) {
+    static async registerFromProvider(type: string, results: any, User: Model) {
       let attributes;
       let providerSpecificMapper = `attributesFrom${ upperFirst(type) }Profile`;
       if (User[providerSpecificMapper]) {
@@ -119,7 +132,7 @@ export default createMixin((MixinBase, options = {}) => {
   }
 
   forEach(providers, (provider) => {
-    OAuthableMixin[`${ camelCase(provider.type) }Id`] = attr('text');
+    (<any>OAuthableMixin)[`${ camelCase(provider.type) }Id`] = attr('text');
   });
 
   return OAuthableMixin;
